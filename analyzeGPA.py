@@ -10,6 +10,11 @@ import pandas as pd
 import re
 import tkinter
 from tkinter.filedialog import askopenfilename
+from os import path
+from pathlib import Path
+import datetime
+from zenhan import z2h
+strptime = datetime.datetime.strptime
 
 
 class AnalyzeGPA:
@@ -17,10 +22,10 @@ class AnalyzeGPA:
     def __init__(self):
         pass
 
-    def main(self, csvname="a.csv"):
-        gdf = self.open_html()
+    def main(self):
+        gdf, csv_filename = self.open_html()
         if gdf is not False:
-            self.calculateGPA(gdf).to_csv(csvname)
+            self.calculateGPA(gdf).to_csv(csv_filename)
             print("END")
         else:
             return 0
@@ -28,17 +33,22 @@ class AnalyzeGPA:
     def open_html(self):
         root = tkinter.Tk()
         root.withdraw()
-        filename = askopenfilename(filetypes=[("html", "*.html")],
-                                   initialdir="./")
+        filename = askopenfilename(filetypes=[("単位修得状況確認表.html", "*.html")],
+                                   initialdir=path.join(str(Path.home()), "Downloads"))
 
         if filename == "":
             print("no file")
             return False
         else:
-            filename = "file://{}".format(filename)
+            url_filename = "file://{}".format(filename)
         print(filename)
-        df = pd.read_html(filename, encoding="Shift-JIS", header=0)
-        return df[4].dropna(subset=["単位", "GP"]).reset_index(drop=True)
+        df = pd.read_html(url_filename, encoding="Shift-JIS", header=0)
+        gdf = df[4].dropna(subset=["単位", "GP"]).reset_index(drop=True)
+
+        updated_date = strptime(z2h(df[1].columns[0], 2), "%Y年%m月%d日").strftime("%Y%m%d")
+        csv_filename = filename.replace(".html", "_{}.csv".format(updated_date))
+
+        return gdf, csv_filename
 
     def calculateGPA(self, gdf):
         quarter = []
