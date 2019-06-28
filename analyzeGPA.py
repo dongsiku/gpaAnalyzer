@@ -23,7 +23,7 @@ class AnalyzeGPA:
         pass
 
     def main(self):
-        gdf, csv_filename = self.open_html()
+        gdf, csv_filename = self.extract_data_from_html()
         if gdf is not False:
             self.calculateGPA(gdf).to_csv(csv_filename)
             print("END")
@@ -43,6 +43,11 @@ class AnalyzeGPA:
             url_filename = "file://{}".format(filename)
         print(filename)
         df = pd.read_html(url_filename, encoding="Shift-JIS", header=0)
+
+        return df, filename
+
+    def extract_data_from_html(self):
+        df, filename = self.open_html()
         gdf = df[4].dropna(subset=["単位", "GP"]).reset_index(drop=True)
 
         updated_date = strptime(z2h(df[1].columns[0], 2), "%Y年%m月%d日").strftime("%Y%m%d")
