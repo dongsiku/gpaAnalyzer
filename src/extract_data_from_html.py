@@ -20,7 +20,8 @@ def extract_data_from_html(filename):
     gpa_rows = gpa_table.findAll("tr")
     gpa_list = []
     gpa_items = ["course_title", "lecturer", "year_completed",
-                    "grade_points", "grade", "credits", "gp"]
+                 "grade_points", "grade", "credits", "gp"]
+    gpa_rows.pop(0)
     for gpa_row in gpa_rows:
         tmp_dict = {item:None for item in gpa_items}
         is_append_list = True
@@ -33,6 +34,8 @@ def extract_data_from_html(filename):
 
         if is_append_list is True:
             # tmp_dict["year_completed"] = []
+            tmp_dict["grade_points"] = int(tmp_dict["grade_points"])
+            tmp_dict["credits"] = float(tmp_dict["credits"])
             gpa_list.append(tmp_dict)
 
     return updated_date, gpa_list
