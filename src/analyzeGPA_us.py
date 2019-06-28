@@ -7,9 +7,11 @@ class AnalyzeGPA_US:
         sum_credits = 0.0
 
         for gpa_dict in self.gpa_list:
-            sum_gp_by_credits \
-                = self.grade_points_to_gp(gpa_dict["grade_points"]) * gpa_dict["credits"]
-            sum_credits = gpa_dict["credits"]
+            gp_us = self.grade_points_to_gp(gpa_dict["grade_points"])
+            print("{}:\t{}".format(gpa_dict["course_title"], gp_us))
+
+            sum_gp_by_credits += gp_us * gpa_dict["credits"]
+            sum_credits += gpa_dict["credits"]
 
         gpa_us = sum_gp_by_credits / sum_credits
         return gpa_us
