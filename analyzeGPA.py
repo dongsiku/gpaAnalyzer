@@ -20,9 +20,18 @@ strptime = datetime.datetime.strptime
 class AnalyzeGPA:
 
     def __init__(self):
+        # pd.set_option("max_rows", 200)
+        # pd.options.display.max_rows
         pass
 
     def main(self):
+        filename = self.get_filename()
+        if filename is False:
+            return 0
+
+        updated_date, gpa_df = self.open_html(filename)
+        return gpa_df
+
         gdf, csv_filename = self.extract_data_from_html()
         if gdf is not False:
             self.calculateGPA(gdf).to_csv(csv_filename)
@@ -30,7 +39,7 @@ class AnalyzeGPA:
         else:
             return 0
 
-    def open_html(self):
+    def get_filename(self):
         root = tkinter.Tk()
         root.withdraw()
         filename = askopenfilename(filetypes=[("単位修得状況確認表.html", "*.html")],
@@ -39,12 +48,21 @@ class AnalyzeGPA:
         if filename == "":
             print("no file")
             return False
-        else:
-            url_filename = "file://{}".format(filename)
+        # else:
+            # url_filename = "file://{}".format(filename)
         print(filename)
-        df = pd.read_html(url_filename, encoding="Shift-JIS", header=0)
+        # df = pd.read_html(url_filename, encoding="Shift-JIS", header=0)
 
-        return df, filename
+        return filename
+
+    def open_html(self, filename):
+        url_filename = "file://{}".format(filename)
+        df = pd.read_html(url_filename, encoding="Shift-JIS", header=0)
+        print(df)
+        gpa_df = df[4].dropna(subset=["評点"]).reset_index(drop=True)
+
+        updated_date = strptime(z2h(df[1].columns[0], 2), "%Y年%m月%d日")
+        return updated_date, gpa_df
 
     def extract_data_from_html(self):
         df, filename = self.open_html()
@@ -55,46 +73,6 @@ class AnalyzeGPA:
 
         return gdf, csv_filename
 
-    def calculateGPA(self, gdf):
-        quarter = []
-        credit = {}
-        cdt_gp = {}
-
-        for i in range(len(gdf["授業科目"])):
-            completed = gdf["修得年度"][i]
-            if re.match(r".*またがり", completed):
-                tmp = completed.rstrip("またがり").split(".", 1)
-                completed = "{} 第{}".format(tmp[0].split(" ")[0], tmp[1])
-
-            if (completed in quarter) is False:
-                quarter.append(completed)
-                credit.update({completed: 0.0})
-                cdt_gp.update({completed: 0.0})
-
-            cdt = float(gdf["単位"][i])
-            credit[completed] += cdt
-            cdt_gp[completed] += (cdt*float(gdf["GP"][i]))
-
-        sum_c = 0.0
-        sum_cg = 0.0
-
-        quarter.sort()
-
-        avg_list = []
-        gavg_list = []
-
-        for q in quarter:
-            sum_c += credit[q]
-            sum_cg += cdt_gp[q]
-            avg_list.append(cdt_gp[q]/credit[q])
-            gavg_list.append(sum_cg/sum_c)
-
-        result = pd.DataFrame({"avg": avg_list, "gavg": gavg_list},
-                              index=quarter)
-
-        return result.round(3)
-
-
 if __name__ == "__main__":
     an = AnalyzeGPA()
-    an.main()
+    print(an.main())
