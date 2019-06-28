@@ -39,5 +39,4 @@ def get_filename():
 
 
 if __name__ == "__main__":
-    an = AnalyzeGPA()
-    print(an.main())
+    main()
