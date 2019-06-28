@@ -16,15 +16,15 @@ from extract_data_from_html import extract_data_from_html
 strptime = datetime.datetime.strptime
 
 
-def main(self):
-    filename = self.get_filename()
+def main():
+    filename = get_filename()
     if filename is False:
         return 0
     updated_date, gpa_list = extract_data_from_html(filename)
     return gpa_list
 
 
-def get_filename(self):
+def get_filename():
     root = tkinter.Tk()
     root.withdraw()
     filename = askopenfilename(filetypes=[("単位修得状況確認表.html", "*.html")],
