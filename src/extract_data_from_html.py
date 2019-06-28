@@ -36,6 +36,7 @@ def extract_data_from_html(filename):
             # tmp_dict["year_completed"] = []
             tmp_dict["grade_points"] = int(tmp_dict["grade_points"])
             tmp_dict["credits"] = float(tmp_dict["credits"])
+            tmp_dict["gp"] = float(tmp_dict["gp"])
             gpa_list.append(tmp_dict)
 
     return updated_date, gpa_list
