@@ -28,7 +28,7 @@ def get_filename():
     root = tkinter.Tk()
     root.withdraw()
     filename = askopenfilename(filetypes=[("単位修得状況確認表.html", "*.html")],
-                               initialdir=path.join(str(Path.home()), 
+                               initialdir=path.join(str(Path.home()),
                                "Downloads"))
 
     if filename == "":

@@ -6,9 +6,6 @@ class AnalyzeGPA_Okadai:
         self.cource_list = cource_list
 
     def get_gpa(self):
-        sum_gp_by_credits = 0.0
-        sum_credits = 0.0
-
         year_completed_set = set()
         for cource_dict in self.cource_list:
             year_completed_set.add(cource_dict["year_completed"])
