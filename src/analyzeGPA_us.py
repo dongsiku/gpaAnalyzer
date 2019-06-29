@@ -1,17 +1,17 @@
 class AnalyzeGPA_US:
-    def __init__(self, gpa_list):
-        self.gpa_list = gpa_list
+    def __init__(self, cource_list):
+        self.cource_list = cource_list
 
     def get_gpa(self):
         sum_gp_by_credits = 0.0
         sum_credits = 0.0
 
-        for gpa_dict in self.gpa_list:
-            gp_us = self.grade_points_to_gp(gpa_dict["grade_points"])
-            print("{}:\t{}".format(gpa_dict["course_title"], gp_us))
+        for cource_dict in self.cource_list:
+            gp_us = self.grade_points_to_gp(cource_dict["grade_points"])
+            print("{}:\t{}".format(cource_dict["course_title"], gp_us))
 
-            sum_gp_by_credits += gp_us * gpa_dict["credits"]
-            sum_credits += gpa_dict["credits"]
+            sum_gp_by_credits += gp_us * cource_dict["credits"]
+            sum_credits += cource_dict["credits"]
 
         gpa_us = sum_gp_by_credits / sum_credits
         return gpa_us

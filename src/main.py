@@ -20,15 +20,16 @@ def main():
     filename = get_filename()
     if filename is False:
         return 0
-    updated_date, gpa_list = extract_data_from_html(filename)
-    return gpa_list
+    updated_date, cource_list = extract_data_from_html(filename)
+    return cource_list
 
 
 def get_filename():
     root = tkinter.Tk()
     root.withdraw()
     filename = askopenfilename(filetypes=[("単位修得状況確認表.html", "*.html")],
-                                initialdir=path.join(str(Path.home()), "Downloads"))
+                               initialdir=path.join(str(Path.home()), 
+                               "Downloads"))
 
     if filename == "":
         print("no file")
