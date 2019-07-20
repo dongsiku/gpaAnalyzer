@@ -26,7 +26,8 @@ def extract_data_from_html(filename):
         tmp_dict = {item: None for item in gpa_items}
         is_append_list = True
         for i, cell in enumerate(gpa_row.findAll(['td', 'th'])):
-            tmp_celltext = z2h(cell.get_text().strip().replace("\u3000", " "), 3)
+            tmp_celltext =\
+                z2h(cell.get_text().strip().replace("\u3000", " "), 3)
             if i == 3 and tmp_celltext == "":
                 is_append_list = False
                 continue
