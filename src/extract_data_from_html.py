@@ -2,12 +2,13 @@ from zenhan import z2h
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import datetime
+import os
 strptime = datetime.datetime.strptime
 
 
 def extract_data_from_html(filename):
     # html to table
-    url_filename = "file://{}".format(filename)
+    url_filename = return_urlfilename(filename)
     html = urlopen(url_filename)
     bsObj = BeautifulSoup(html, "html.parser")
     table = bsObj.findAll("table")
@@ -41,3 +42,11 @@ def extract_data_from_html(filename):
             gpa_list.append(tmp_dict)
 
     return updated_date, gpa_list
+
+
+def return_urlfilename(filename):
+    if os.name == "nt":
+        url_filename = "file://{}".format(filename.split(":")[-1])
+    elif os.name == 'posix':
+        url_filename = "file://{}".format(filename)
+    return url_filename
