@@ -19,7 +19,7 @@ strptime = datetime.datetime.strptime
 def open_gradefile():
     filename = get_filename()
     if filename is False:
-        return False, False
+        return False, False, False
     updated_date, course_list = extract_data_from_html(filename)
     return filename, updated_date, course_list
 
