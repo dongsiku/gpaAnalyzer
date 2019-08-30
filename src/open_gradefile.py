@@ -7,17 +7,18 @@ Created on Tue Feb 20 09:40:34 2018
 """
 
 import re
-import tkinter
-from tkinter.filedialog import askopenfilename
 from os import path
 from pathlib import Path
-import datetime
 from extract_data_from_html import extract_data_from_html
-strptime = datetime.datetime.strptime
+import sys
 
 
 def open_gradefile():
-    filename = get_filename()
+    if len(sys.argv) == 2:
+        filename = sys.argv[1]
+    else:
+        filename = get_filename()
+
     if filename is False:
         return False, False, False
     updated_date, course_list = extract_data_from_html(filename)
@@ -25,6 +26,8 @@ def open_gradefile():
 
 
 def get_filename():
+    import tkinter
+    from tkinter.filedialog import askopenfilename
     root = tkinter.Tk()
     root.withdraw()
     filename = askopenfilename(filetypes=[("単位修得状況確認表.html", "*.html")],
