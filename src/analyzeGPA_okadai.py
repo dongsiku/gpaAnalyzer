@@ -2,13 +2,13 @@ import re
 
 
 class AnalyzeGPA_Okadai:
-    def __init__(self, cource_list):
-        self.cource_list = cource_list
+    def __init__(self, course_list):
+        self.course_list = course_list
 
     def get_gpa(self):
         year_completed_set = set()
-        for cource_dict in self.cource_list:
-            year_completed_set.add(cource_dict["year_completed"])
+        for course_dict in self.course_list:
+            year_completed_set.add(course_dict["year_completed"])
 
         year_completed_list = []
         for yc in year_completed_set:
@@ -24,15 +24,15 @@ class AnalyzeGPA_Okadai:
         sum_credits_dict = tmp_yc_dict.copy()
         gpa_dict = tmp_yc_dict.copy()
 
-        for cource_dict in self.cource_list:
-            year_completed = cource_dict["year_completed"]
+        for course_dict in self.course_list:
+            year_completed = course_dict["year_completed"]
             if re.match(r".*またがり", year_completed):
                 tmp_yc = year_completed.rstrip("またがり").split(".", 1)
                 year_completed =\
                     "{} 第{}".format(tmp_yc[0].split(" ")[0], tmp_yc[1])
             sum_gp_by_credits_dict[year_completed] +=\
-                cource_dict["gp"] * cource_dict["credits"]
-            sum_credits_dict[year_completed] += cource_dict["credits"]
+                course_dict["gp"] * course_dict["credits"]
+            sum_credits_dict[year_completed] += course_dict["credits"]
 
         sum_gp_by_credits = 0.0
         sum_credits = 0.0
@@ -54,6 +54,6 @@ class AnalyzeGPA_Okadai:
 
 if __name__ == "__main__":
     from main import open_gradefile
-    _, cource_list = open_gradefile()
-    agpa_us = AnalyzeGPA_Okadai(cource_list)
+    _, course_list = open_gradefile()
+    agpa_us = AnalyzeGPA_Okadai(course_list)
     print(agpa_us.get_gpa())
