@@ -3,3 +3,5 @@
 env/
 __pycache__/
 src/main.pyc
+excel_file/*
+!excel_file/gpaAnalyzer.xlsx
