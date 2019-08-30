@@ -14,7 +14,7 @@ class AnalyzeGPA_Okadai:
         for yc in year_completed_set:
             if re.match(r"\d\d\d\d年度 第\d学期", yc):
                 year_completed_list.append(yc)
-            elif not re.match(r".*またがり", yc):
+            elif not re.match(r".*学期またがり", yc):
                 if "その他" not in year_completed_list:
                     year_completed_list.append("その他")
         year_completed_list.sort()
@@ -26,10 +26,14 @@ class AnalyzeGPA_Okadai:
 
         for course_dict in self.course_list:
             year_completed = course_dict["year_completed"]
-            if re.match(r".*またがり", year_completed):
+            if re.match(r"\d\d\d\d年度 \d.\d学期またがり", year_completed):
                 tmp_yc = year_completed.rstrip("またがり").split(".", 1)
                 year_completed =\
                     "{} 第{}".format(tmp_yc[0].split(" ")[0], tmp_yc[1])
+            elif re.match(r"\d\d\d\d年度 第\d学期", year_completed):
+                pass
+            else:
+                year_completed = "その他"
             sum_gp_by_credits_dict[year_completed] +=\
                 course_dict["gp"] * course_dict["credits"]
             sum_credits_dict[year_completed] += course_dict["credits"]
