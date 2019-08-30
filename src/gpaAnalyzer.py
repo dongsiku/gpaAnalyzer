@@ -1,3 +1,6 @@
+import sys
+from os import path
+sys.path.append(path.dirname(path.abspath(sys.argv[0])))
 from export_to_excelfile import ExportToExcelFile
 
 
