@@ -53,7 +53,7 @@ class AnalyzeGPA_Okadai:
         return year_completed_list, gpa_dict
 
 if __name__ == "__main__":
-    from main import open_gradefile
-    _, course_list = open_gradefile()
+    from open_gradefile import open_gradefile
+    *_, course_list = open_gradefile()
     agpa_us = AnalyzeGPA_Okadai(course_list)
     print(agpa_us.get_gpa())

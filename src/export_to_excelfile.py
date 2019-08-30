@@ -3,21 +3,19 @@ from shutil import copyfile
 from os import path
 import sys
 from analyzeGPA_okadai import AnalyzeGPA_Okadai
-from main import open_gradefile
+from open_gradefile import open_gradefile
 
 
 class ExportToExcelFile:
-    def __init__(self, dirname=None):
-        if dirname is None:
-            dirname = path.join(path.dirname(path.abspath(sys.argv[0])),
-                                "../excel_file/")
-        updated_date, gpa_list = open_gradefile()
+    def __init__(self):
+        filename, updated_date, gpa_list = open_gradefile()
         if updated_date is not False:
             self.analyzegpa_okadai = AnalyzeGPA_Okadai(gpa_list)
             self.excel_filename =\
                 ("gpaAnalyzer_{}"
                  ".xlsx".format(updated_date.strftime('%Y%m%d')))
-            self.excel_filename = path.join(dirname, self.excel_filename)
+            self.excel_filename = path.join(path.dirname(filename),
+                                            self.excel_filename)
             self.original_excel_filename =\
                 path.join(path.dirname(path.abspath(sys.argv[0])),
                           "../excel_file/gpaAnalyzer.xlsx")

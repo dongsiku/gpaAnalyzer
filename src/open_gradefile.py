@@ -21,12 +21,7 @@ def open_gradefile():
     if filename is False:
         return False, False
     updated_date, course_list = extract_data_from_html(filename)
-    return updated_date, course_list
-
-
-def main():
-    updated_date, course_list = open_gradefile()
-    return course_list
+    return filename, updated_date, course_list
 
 
 def get_filename():
