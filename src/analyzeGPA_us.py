@@ -44,6 +44,7 @@ class AnalyzeGPA_US:
 
 
 if __name__ == "__main__":
-    from main import main
-    agpa_us = AnalyzeGPA_US(main())
+    from main import open_gradefile
+    _, cource_list = open_gradefile()
+    agpa_us = AnalyzeGPA_US(cource_list)
     print(agpa_us.get_gpa())
