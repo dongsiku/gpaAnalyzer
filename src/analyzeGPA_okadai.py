@@ -34,10 +34,21 @@ class AnalyzeGPA_Okadai:
                 cource_dict["gp"] * cource_dict["credits"]
             sum_credits_dict[year_completed] += cource_dict["credits"]
 
+        sum_gp_by_credits = 0.0
+        sum_credits = 0.0
+
         for yc in year_completed_list:
-            gpa = sum_gp_by_credits_dict[yc] / sum_credits_dict[yc]
-            gpa_dict[yc] = gpa
-            print("{}, {}".format(yc, gpa))
+            sum_gp_by_credits += sum_gp_by_credits_dict[yc]
+            sum_credits += sum_credits_dict[yc]
+
+            try:
+                gpa = sum_gp_by_credits_dict[yc] / sum_credits_dict[yc]
+                accumulated_gpa = sum_gp_by_credits / sum_credits
+            except ZeroDivisionError:
+                continue
+
+            gpa_dict[yc] = {"gpa": gpa, "accumulated_gpa": accumulated_gpa}
+            print("{}, {}, {}".format(yc, gpa, accumulated_gpa))
 
         return year_completed_list, gpa_dict
 
