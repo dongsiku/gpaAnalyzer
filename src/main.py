@@ -16,11 +16,16 @@ from extract_data_from_html import extract_data_from_html
 strptime = datetime.datetime.strptime
 
 
-def main():
+def open_gradefile():
     filename = get_filename()
     if filename is False:
-        return 0
+        return False, False
     updated_date, cource_list = extract_data_from_html(filename)
+    return updated_date, cource_list
+
+
+def main():
+    updated_date, cource_list = open_gradefile()
     return cource_list
 
 
